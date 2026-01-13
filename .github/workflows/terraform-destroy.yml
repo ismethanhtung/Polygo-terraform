@@ -1,0 +1,54 @@
+name: Terraform Destroy
+
+on:
+    workflow_dispatch:
+        inputs:
+            confirm_destroy:
+                description: 'Type "destroy" to confirm'
+                required: true
+                type: string
+
+permissions:
+    id-token: write
+    contents: read
+
+env:
+    AWS_REGION: ap-southeast-1
+    TF_WORKING_DIR: environments/dev
+    AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+
+jobs:
+    terraform-destroy:
+        name: Terraform Destroy
+        if: github.event.inputs.confirm_destroy == 'destroy'
+        runs-on: ubuntu-latest
+        environment: dev
+        defaults:
+            run:
+                working-directory: ${{ env.TF_WORKING_DIR }}
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  role-to-assume: ${{ env.AWS_ROLE_ARN }}
+                  aws-region: ${{ env.AWS_REGION }}
+                  role-session-name: terraform-destroy
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                  terraform_version: 1.8.5
+
+            - name: Terraform Init
+              run: terraform init
+
+            - name: Terraform Destroy
+              run: terraform destroy -auto-approve
+
+            - name: Destroy Complete
+              run: |
+                  echo "✅ All resources have been destroyed successfully!"
