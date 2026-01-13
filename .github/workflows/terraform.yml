@@ -18,7 +18,7 @@ permissions:
 env:
     AWS_REGION: ap-southeast-1 # Thay đổi region nếu cần
     TF_WORKING_DIR: environments/dev
-    AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+    AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
 
 jobs:
     terraform-plan:
@@ -36,7 +36,7 @@ jobs:
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
-                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+                  role-to-assume: ${{ vars.AWS_ROLE_ARN }}
                   aws-region: ${{ env.AWS_REGION }}
                   role-session-name: terraform-plan
 
@@ -99,7 +99,7 @@ jobs:
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
-                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+                  role-to-assume: ${{ vars.AWS_ROLE_ARN }}
                   aws-region: ${{ env.AWS_REGION }}
                   role-session-name: terraform-apply
 
