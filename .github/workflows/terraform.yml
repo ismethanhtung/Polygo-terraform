@@ -33,12 +33,19 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
+            - name: Debug - Check AWS_ROLE_ARN
+              run: |
+                  echo "AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}"
+                  echo "Repository: ${{ github.repository }}"
+                  echo "Ref: ${{ github.ref }}"
+
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
                   role-to-assume: ${{ vars.AWS_ROLE_ARN }}
                   aws-region: ${{ env.AWS_REGION }}
-                  role-session-name: terraform-plan
+                  role-session-name: terraform-plan-${{ github.run_id }}
+                  role-duration-seconds: 3600
 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v3
@@ -96,12 +103,19 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
+            - name: Debug - Check AWS_ROLE_ARN
+              run: |
+                  echo "AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}"
+                  echo "Repository: ${{ github.repository }}"
+                  echo "Ref: ${{ github.ref }}"
+
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
                   role-to-assume: ${{ vars.AWS_ROLE_ARN }}
                   aws-region: ${{ env.AWS_REGION }}
-                  role-session-name: terraform-apply
+                  role-session-name: terraform-apply-${{ github.run_id }}
+                  role-duration-seconds: 3600
 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v3

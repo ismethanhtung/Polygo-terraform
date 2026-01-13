@@ -27,6 +27,12 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
+            - name: Debug - Check AWS_ROLE_ARN
+              run: |
+                  echo "AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}"
+                  echo "Repository: ${{ github.repository }}"
+                  echo "Ref: ${{ github.ref }}"
+
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v3
               with:
@@ -37,7 +43,8 @@ jobs:
               with:
                   role-to-assume: ${{ vars.AWS_ROLE_ARN }}
                   aws-region: ${{ env.AWS_REGION }}
-                  role-session-name: terraform-unlock
+                  role-session-name: terraform-unlock-${{ github.run_id }}
+                  role-duration-seconds: 3600
 
             - name: Terraform Init (no lock)
               run: terraform init -lock=false
