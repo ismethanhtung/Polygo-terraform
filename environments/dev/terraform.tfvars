@@ -9,6 +9,7 @@ db_name              = "clinic_dev_db"
 db_username          = "admin"
 db_password          = "SuperSecretPass123!" # Trong thực tế nên dùng AWS Secrets Manager
 instance_type        = "t3.micro"
+project_name         = "Polygo"
 
 # Supabase Configuration
 supabase_url = "https://tenghuxzjlxvqyrycyts.supabase.co"
