@@ -2,7 +2,7 @@
 
 locals {
   service_name   = "polygo"
-  container_port = 8000
+  container_port = 8080
 
   tags = {
     Environment = var.environment
