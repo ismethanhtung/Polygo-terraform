@@ -11,6 +11,10 @@ resource "aws_lb" "main" {
     Name        = "${var.environment}-${var.project_name}-alb"
     Environment = var.environment
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb_target_group" "main" {
@@ -30,6 +34,10 @@ resource "aws_lb_target_group" "main" {
     protocol            = "HTTP"
     port                = "traffic-port"
     matcher             = "200"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
