@@ -15,7 +15,7 @@ resource "aws_lb" "main" {
 
 resource "aws_lb_target_group" "main" {
   name        = "${var.environment}-${var.project_name}-tg"
-  port        = 8000
+  port        = 8080
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip" # BẮT BUỘC cho Fargate +  awsvpc
